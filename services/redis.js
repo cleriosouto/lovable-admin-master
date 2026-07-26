@@ -1,23 +1,32 @@
 import { Redis } from "@upstash/redis";
 
 
-let redis;
+let redis = null;
 
 
 try {
 
-    redis = new Redis({
-
-        url:
-            process.env.KV_REST_API_URL,
-
-        token:
-            process.env.KV_REST_API_TOKEN
-
-    });
+    const url = process.env.KV_REST_API_URL;
+    const token = process.env.KV_REST_API_TOKEN;
 
 
-} catch (e) {
+    if(url && token){
+
+        redis = new Redis({
+            url,
+            token
+        });
+
+        console.log("[SUCCESS] Redis conectado");
+
+    }else{
+
+        console.log("[WARN] Variáveis Redis ausentes");
+
+    }
+
+
+}catch(e){
 
     console.log(
         "Redis config error:",
@@ -27,4 +36,76 @@ try {
 }
 
 
-export const kv = redis;
+
+const memory = new Map();
+
+
+
+export const kv = {
+
+
+    async get(key){
+
+        if(redis){
+
+            return await redis.get(key);
+
+        }
+
+        return memory.get(key) || null;
+
+    },
+
+
+    async set(key,value){
+
+        if(redis){
+
+            return await redis.set(
+                key,
+                value
+            );
+
+        }
+
+        memory.set(
+            key,
+            value
+        );
+
+        return "OK";
+
+    },
+
+
+    async del(key){
+
+        if(redis){
+
+            return await redis.del(key);
+
+        }
+
+        memory.delete(key);
+
+        return 1;
+
+    },
+
+
+    async keys(pattern="*"){
+
+        if(redis){
+
+            return await redis.keys(pattern);
+
+        }
+
+
+        return [
+            ...memory.keys()
+        ];
+
+    }
+
+};
