@@ -493,7 +493,16 @@ export default async function handler(req,res){
         );
 
 
+const testeRedis =
+    await kv.get(
+        `license:${code}`
+    );
 
+
+console.log(
+    "LICENCA GRAVADA:",
+    testeRedis
+);
 
 
 

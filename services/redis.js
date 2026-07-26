@@ -4,75 +4,41 @@ import { Redis } from "@upstash/redis";
 let redis = null;
 
 
-try {
+const url =
+    process.env.KV_REST_API_URL;
 
 
-    const url =
-        process.env.KV_REST_API_URL ||
-        process.env.UPSTASH_REDIS_REST_URL ||
-        process.env.STORAGES_KV_REST_API_URL;
-
-
-    const token =
-        process.env.KV_REST_API_TOKEN ||
-        process.env.UPSTASH_REDIS_REST_TOKEN ||
-        process.env.STORAGES_KV_REST_API_TOKEN;
+const token =
+    process.env.KV_REST_API_TOKEN;
 
 
 
-    console.log(
-        "[REDIS CHECK]",
-        {
-            urlExiste: !!url,
-            tokenExiste: !!token
-        }
-    );
+if(url && token){
 
+    redis = new Redis({
 
+        url,
 
-    if(url && token){
+        token
 
-
-        redis = new Redis({
-
-            url,
-
-            token
-
-        });
-
-
-        console.log(
-            "[SUCCESS] Upstash Redis inicializado"
-        );
-
-
-    }else{
-
-
-        console.log(
-            "[ERROR] Variáveis Redis não encontradas"
-        );
-
-
-    }
-
-
-
-}catch(e){
+    });
 
 
     console.log(
-        "Redis config error:",
-        e.message
+        "[SUCCESS] Redis conectado"
     );
 
+
+}else{
+
+
+    console.log(
+        "[ERROR] Redis ENV ausente"
+    );
 
 }
 
 
-
-const memory = new Map();
 
 
 
@@ -82,79 +48,85 @@ export const kv = {
     async get(key){
 
 
-        if(redis){
+        if(!redis){
 
-            return await redis.get(key);
+            throw new Error(
+                "Redis não configurado"
+            );
 
         }
 
 
-        return memory.get(key) || null;
+        return await redis.get(key);
 
 
     },
+
+
 
 
 
     async set(key,value){
 
 
-        if(redis){
+        if(!redis){
 
-            return await redis.set(
-                key,
-                value
+            throw new Error(
+                "Redis não configurado"
             );
 
         }
 
 
-        memory.set(
+        return await redis.set(
+
             key,
+
             value
+
         );
 
 
-        return "OK";
-
-
     },
+
+
 
 
 
     async del(key){
 
 
-        if(redis){
+        if(!redis){
 
-            return await redis.del(key);
+            throw new Error(
+                "Redis não configurado"
+            );
 
         }
 
 
-        memory.delete(key);
-
-
-        return 1;
+        return await redis.del(key);
 
 
     },
 
 
 
-    async keys(pattern="*"){
 
 
-        if(redis){
+    async keys(pattern){
 
-            return await redis.keys(pattern);
+
+        if(!redis){
+
+            throw new Error(
+                "Redis não configurado"
+            );
 
         }
 
 
-        return Array.from(
-            memory.keys()
-        );
+        return await redis.keys(pattern);
 
 
     }
