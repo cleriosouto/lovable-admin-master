@@ -6,32 +6,67 @@ let redis = null;
 
 try {
 
-    const url = process.env.KV_REST_API_URL;
-    const token = process.env.KV_REST_API_TOKEN;
+
+    const url =
+        process.env.KV_REST_API_URL ||
+        process.env.UPSTASH_REDIS_REST_URL ||
+        process.env.STORAGES_KV_REST_API_URL;
+
+
+    const token =
+        process.env.KV_REST_API_TOKEN ||
+        process.env.UPSTASH_REDIS_REST_TOKEN ||
+        process.env.STORAGES_KV_REST_API_TOKEN;
+
+
+
+    console.log(
+        "[REDIS CHECK]",
+        {
+            urlExiste: !!url,
+            tokenExiste: !!token
+        }
+    );
+
 
 
     if(url && token){
 
+
         redis = new Redis({
+
             url,
+
             token
+
         });
 
-        console.log("[SUCCESS] Redis conectado");
+
+        console.log(
+            "[SUCCESS] Upstash Redis inicializado"
+        );
+
 
     }else{
 
-        console.log("[WARN] Variáveis Redis ausentes");
+
+        console.log(
+            "[ERROR] Variáveis Redis não encontradas"
+        );
+
 
     }
 
 
+
 }catch(e){
+
 
     console.log(
         "Redis config error:",
         e.message
     );
+
 
 }
 
@@ -46,18 +81,23 @@ export const kv = {
 
     async get(key){
 
+
         if(redis){
 
             return await redis.get(key);
 
         }
 
+
         return memory.get(key) || null;
+
 
     },
 
 
+
     async set(key,value){
+
 
         if(redis){
 
@@ -68,17 +108,22 @@ export const kv = {
 
         }
 
+
         memory.set(
             key,
             value
         );
 
+
         return "OK";
+
 
     },
 
 
+
     async del(key){
+
 
         if(redis){
 
@@ -86,14 +131,19 @@ export const kv = {
 
         }
 
+
         memory.delete(key);
 
+
         return 1;
+
 
     },
 
 
+
     async keys(pattern="*"){
+
 
         if(redis){
 
@@ -102,10 +152,12 @@ export const kv = {
         }
 
 
-        return [
-            ...memory.keys()
-        ];
+        return Array.from(
+            memory.keys()
+        );
+
 
     }
+
 
 };
