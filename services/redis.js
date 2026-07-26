@@ -4,37 +4,55 @@ import { Redis } from "@upstash/redis";
 let redis = null;
 
 
-const url =
-    process.env.KV_REST_API_URL;
+try {
 
 
-const token =
-    process.env.KV_REST_API_TOKEN;
+    const url =
+        process.env.KV_REST_API_URL;
+
+
+    const token =
+        process.env.KV_REST_API_TOKEN;
 
 
 
-if(url && token){
+    if(url && token){
 
-    redis = new Redis({
 
-        url,
+        redis = new Redis({
 
-        token
+            url,
 
-    });
+            token
+
+        });
+
+
+        console.log(
+            "[SUCCESS] Redis conectado"
+        );
+
+
+    }else{
+
+
+        console.log(
+            "[WARNING] Redis ENV ausente"
+        );
+
+
+    }
+
+
+
+}catch(e){
 
 
     console.log(
-        "[SUCCESS] Redis conectado"
+        "Redis erro:",
+        e.message
     );
 
-
-}else{
-
-
-    console.log(
-        "[ERROR] Redis ENV ausente"
-    );
 
 }
 
@@ -48,20 +66,17 @@ export const kv = {
     async get(key){
 
 
-        if(!redis){
+        if(redis){
 
-            throw new Error(
-                "Redis não configurado"
-            );
+            return await redis.get(key);
 
         }
 
 
-        return await redis.get(key);
+        return null;
 
 
     },
-
 
 
 
@@ -69,26 +84,20 @@ export const kv = {
     async set(key,value){
 
 
-        if(!redis){
+        if(redis){
 
-            throw new Error(
-                "Redis não configurado"
+            return await redis.set(
+                key,
+                value
             );
 
         }
 
 
-        return await redis.set(
-
-            key,
-
-            value
-
-        );
+        return null;
 
 
     },
-
 
 
 
@@ -96,16 +105,14 @@ export const kv = {
     async del(key){
 
 
-        if(!redis){
+        if(redis){
 
-            throw new Error(
-                "Redis não configurado"
-            );
+            return await redis.del(key);
 
         }
 
 
-        return await redis.del(key);
+        return null;
 
 
     },
@@ -113,23 +120,23 @@ export const kv = {
 
 
 
+    async keys(pattern="*"){
 
-    async keys(pattern){
 
+        if(redis){
 
-        if(!redis){
-
-            throw new Error(
-                "Redis não configurado"
+            return await redis.keys(
+                pattern
             );
 
         }
 
 
-        return await redis.keys(pattern);
+        return [];
 
 
     }
+
 
 
 };
