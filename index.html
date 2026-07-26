@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LovABLE MASTER Admin - Souto Digital Serviços</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<script>
+tailwind.config = {
+  darkMode: 'class',
+  theme: {
+    extend: {
+      fontFamily: { sans: ['Inter','sans-serif'], mono: ['JetBrains Mono','monospace'] },
+      animation: { 'fade-in': 'fadeIn 0.5s ease', 'slide-up': 'slideUp 0.4s ease', 'pulse-slow': 'pulse 3s infinite' }
+    }
+  }
+}
+</script>
+<style>
+@keyframes fadeIn { from { opacity:0 } to { opacity:1 } }
+@keyframes slideUp { from { opacity:0; transform:translateY(20px) } to { opacity:1; transform:translateY(0) } }
+.glass { backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); }
+.gradient-mesh { background: radial-gradient(at 40% 20%, hsla(199,89%,48%,0.15) 0px, transparent 50%), radial-gradient(at 80% 0%, hsla(262,83%,58%,0.15) 0px, transparent 50%), radial-gradient(at 0% 50%, hsla(199,89%,48%,0.1) 0px, transparent 50%); }
+::-webkit-scrollbar { width:6px; height:6px } ::-webkit-scrollbar-track { background:transparent } ::-webkit-scrollbar-thumb { background:#1e2a3a; border-radius:3px } ::-webkit-scrollbar-thumb:hover { background:#2a3a52 }
+</style>
+</head>
+<body class="bg-[#060a0f] text-[#e2e8f0] font-sans min-h-screen antialiased selection:bg-cyan-500/30">
+<!-- LOGIN -->
+<div id="loginPage" class="min-h-screen flex items-center justify-center p-4 gradient-mesh">
+  <div class="w-full max-w-[440px] animate-fade-in">
+    <div class="bg-[#0f1623]/80 glass border border-[#1e2a3a] rounded-[24px] p-8 md:p-10 shadow-[0_20px_80px_rgba(0,0,0,0.5),0_0_0_1px_rgba(255,255,255,0.05)_inset]">
+      <div class="text-center mb-8">
+        <div class="w-20 h-20 mx-auto mb-6 rounded-[20px] bg-gradient-to-br from-cyan-400 to-violet-600 p-[1px] shadow-[0_0_40px_rgba(6,182,212,0.3)]">
+          <div class="w-full h-full rounded-[19px] bg-white flex items-center justify-center overflow-hidden">
+            <img src="logo.png" alt="Souto" class="w-full h-full object-contain p-2">
+          </div>
+        </div>
+        <h1 class="text-[28px] font-black tracking-tight leading-none">LovABLE</h1>
+        <div class="text-[12px] font-bold tracking-[0.2em] text-cyan-400 mt-2 uppercase">Master Admin v3.1</div>
+        <p class="text-[13px] text-[#94a3b8] mt-3">Souto Digital Serviços • Painel Definitivo</p>
+        <div class="inline-flex items-center gap-2 mt-4 px-3 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-[11px] font-semibold text-cyan-300">
+          <div class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></div> https://soutolovable.vercel.app
+        </div>
+      </div>
+      
+      <div class="space-y-5">
+        <div>
+          <label class="text-[11px] font-bold tracking-widest uppercase text-[#64748b] mb-2.5 block">Usuário</label>
+          <input id="loginUser" value="admin" class="w-full h-[52px] px-4 rounded-xl bg-[#1c2433] border border-[#1e2a3a] text-[14px] font-medium focus:outline-none focus:border-cyan-500/50 focus:ring-4 focus:ring-cyan-500/10 transition-all placeholder:text-[#475569]">
+        </div>
+        <div>
+          <label class="text-[11px] font-bold tracking-widest uppercase text-[#64748b] mb-2.5 block">Senha</label>
+          <input id="loginPass" type="password" value="admin123" class="w-full h-[52px] px-4 rounded-xl bg-[#1c2433] border border-[#1e2a3a] text-[14px] font-medium focus:outline-none focus:border-cyan-500/50 focus:ring-4 focus:ring-cyan-500/10 transition-all">
+        </div>
+        <button onclick="login()" class="w-full h-[52px] rounded-xl bg-gradient-to-r from-cyan-500 to-violet-600 text-white font-bold text-[14px] tracking-wide shadow-[0_0_30px_rgba(6,182,212,0.3)] hover:shadow-[0_0_40px_rgba(6,182,212,0.4)] hover:translate-y-[-1px] active:translate-y-[0px] transition-all">Entrar no Painel Master →</button>
+      </div>
+
+      <div class="mt-8 p-4 rounded-xl bg-[#1c2433] border border-[#1e2a3a]">
+        <div class="text-[11px] font-bold uppercase tracking-widest text-[#94a3b8] mb-3">Acesso Rápido</div>
+        <div class="space-y-2 text-[12px]">
+          <div class="flex justify-between"><span class="text-[#64748b]">Admin:</span><span class="font-mono font-bold">admin / admin123</span></div>
+          <div class="flex justify-between"><span class="text-[#64748b]">Master:</span><span class="font-mono font-bold text-cyan-400">SOUTO-MASTER</span></div>
+          <div class="flex justify-between"><span class="text-[#64748b]">Numérico:</span><span class="font-mono font-bold text-emerald-400">99999999</span></div>
+        </div>
+      </div>
+
+      <div class="mt-6 text-center text-[11px] text-[#475569]">Desenvolvido por <span class="text-[#94a3b8] font-semibold">Souto Digital Serviços</span> • 2026 • Master</div>
+    </div>
+  </div>
+</div>
+
+<!-- DASHBOARD -->
+<div id="dashboardPage" class="hidden min-h-screen">
+  <!-- Sidebar -->
+  <aside id="sidebar" class="fixed left-0 top-0 bottom-0 w-[280px] bg-[#0f1623] border-r border-[#1e2a3a] z-30 flex flex-col transition-transform duration-300 lg:translate-x-0 -translate-x-full">
+    <div class="p-6 border-b border-[#1e2a3a]">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-400 to-violet-600 p-[1px]">
+          <div class="w-full h-full rounded-[11px] bg-white flex items-center justify-center"><img src="logo.png" class="w-full h-full object-contain p-1"></div>
+        </div>
+        <div><div class="font-black text-[15px] tracking-tight">LovABLE</div><div class="text-[11px] text-cyan-400 font-bold tracking-widest uppercase">Master v3.1</div></div>
+      </div>
+      <div class="mt-4 px-3 py-2 rounded-lg bg-cyan-500/10 border border-cyan-500/20 text-[11px] font-medium text-cyan-300 truncate">soutolovable.vercel.app</div>
+    </div>
+    
+    <nav class="flex-1 p-4 space-y-1 overflow-y-auto">
+      <div class="text-[10px] font-bold tracking-[0.15em] uppercase text-[#475569] px-3 py-2">Principal</div>
+      <button data-page="dashboard" class="nav-item w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-[13px] font-medium text-white bg-[#1c2433] border border-[#1e2a3a]"><span>📊</span> Dashboard</button>
+      <button data-page="generator" class="nav-item w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-[13px] font-medium text-[#94a3b8] hover:text-white hover:bg-[#1c2433]"><span>⚙️</span> Gerador</button>
+      <button data-page="licenses" class="nav-item w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-[13px] font-medium text-[#94a3b8] hover:text-white hover:bg-[#1c2433]"><span>🔑</span> Licenças <span id="navLicensesCount" class="ml-auto text-[11px] bg-[#1e2a3a] px-2 py-0.5 rounded-full">0</span></button>
+      
+      <div class="text-[10px] font-bold tracking-[0.15em] uppercase text-[#475569] px-3 py-2 mt-6">Gestão</div>
+      <button data-page="clients" class="nav-item w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-[13px] font-medium text-[#94a3b8] hover:text-white hover:bg-[#1c2433]"><span>👥</span> Clientes</button>
+      <button data-page="payments" class="nav-item w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-[13px] font-medium text-[#94a3b8] hover:text-white hover:bg-[#1c2433]"><span>💳</span> Pagamentos</button>
+      <button data-page="renewals" class="nav-item w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-[13px] font-medium text-[#94a3b8] hover:text-white hover:bg-[#1c2433]"><span>🔄</span> Renovações</button>
+      
+      <div class="text-[10px] font-bold tracking-[0.15em] uppercase text-[#475569] px-3 py-2 mt-6">Sistema</div>
+      <button data-page="reports" class="nav-item w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-[13px] font-medium text-[#94a3b8] hover:text-white hover:bg-[#1c2433]"><span>📈</span> Relatórios</button>
+      <button data-page="logs" class="nav-item w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-[13px] font-medium text-[#94a3b8] hover:text-white hover:bg-[#1c2433]"><span>📋</span> Logs</button>
+      <button data-page="settings" class="nav-item w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-[13px] font-medium text-[#94a3b8] hover:text-white hover:bg-[#1c2433]"><span>⚙️</span> Configurações</button>
+    </nav>
+
+    <div class="p-4 border-t border-[#1e2a3a]">
+      <div class="rounded-xl bg-gradient-to-br from-cyan-500/10 to-violet-600/10 border border-cyan-500/20 p-4 mb-4">
+        <div class="text-[12px] font-bold text-white">Acesso Admin</div>
+        <div class="text-[11px] text-[#94a3b8] mt-1">Use na extensão:</div>
+        <div class="mt-2 font-mono text-[13px] font-bold text-cyan-400">99999999</div>
+        <div class="font-mono text-[11px] text-violet-400">SOUTO-MASTER</div>
+      </div>
+      <div class="text-[11px] text-[#475569] leading-relaxed">Souto Digital Serviços<br>Versão MASTER 3.1<br>© 2026 • Moçambique</div>
+      <button onclick="logout()" class="w-full mt-3 h-9 rounded-lg bg-red-500/10 hover:bg-red-500/15 border border-red-500/20 text-red-400 text-[12px] font-semibold">Sair do Painel</button>
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <div class="lg:ml-[280px] min-h-screen">
+    <!-- Topbar -->
+    <header class="sticky top-0 z-20 bg-[#060a0f]/80 glass border-b border-[#1e2a3a] backdrop-blur-xl">
+      <div class="flex items-center justify-between px-4 lg:px-8 h-[64px]">
+        <div class="flex items-center gap-4">
+          <button onclick="document.getElementById('sidebar').classList.toggle('-translate-x-full')" class="lg:hidden w-9 h-9 rounded-lg bg-[#1c2433] border border-[#1e2a3a] flex items-center justify-center">☰</button>
+          <div><h1 id="pageTitle" class="text-[20px] font-black tracking-tight">Dashboard</h1><p id="pageSubtitle" class="text-[12px] text-[#64748b]">Visão geral • soutolovable.vercel.app</p></div>
+        </div>
+        <div class="flex items-center gap-2">
+          <div class="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-[11px] font-semibold text-emerald-400"><div class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></div> API Online • KV Ativo</div>
+          <button onclick="exportCSV()" class="h-9 px-3 rounded-lg bg-[#1c2433] border border-[#1e2a3a] text-[12px] font-semibold hover:bg-[#232e42]">Export CSV</button>
+          <button onclick="showPage('generator')" class="h-9 px-4 rounded-lg bg-gradient-to-r from-cyan-500 to-violet-600 text-white text-[12px] font-bold shadow-[0_0_20px_rgba(6,182,212,0.3)]">+ Nova Licença</button>
+        </div>
+      </div>
+    </header>
+
+    <main class="p-4 lg:p-8">
+      <!-- DASHBOARD PAGE -->
+      <div id="page-dashboard" class="page space-y-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div class="group relative overflow-hidden rounded-[20px] bg-[#0f1623] border border-[#1e2a3a] p-6 hover:border-[#2a3a52] transition-all">
+            <div class="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-cyan-400 to-violet-600"></div>
+            <div class="text-[11px] font-bold tracking-widest uppercase text-[#64748b]">Total Vendido</div>
+            <div id="statRevenue" class="text-[32px] font-black tracking-tight mt-2">0 MT</div>
+            <div id="statTotal" class="text-[12px] text-[#475569] mt-1">0 licenças</div>
+            <div class="absolute right-6 top-6 w-10 h-10 rounded-xl bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center text-[18px]">💰</div>
+          </div>
+          <div class="group relative overflow-hidden rounded-[20px] bg-[#0f1623] border border-[#1e2a3a] p-6 hover:border-[#2a3a52] transition-all">
+            <div class="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-emerald-400 to-cyan-400"></div>
+            <div class="text-[11px] font-bold tracking-widest uppercase text-[#64748b]">Ativos</div>
+            <div id="statActive" class="text-[32px] font-black tracking-tight mt-2 text-emerald-400">0</div>
+            <div class="text-[12px] text-[#475569] mt-1">Com acesso liberado</div>
+            <div class="absolute right-6 top-6 w-10 h-10 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center">✅</div>
+          </div>
+          <div class="group relative overflow-hidden rounded-[20px] bg-[#0f1623] border border-[#1e2a3a] p-6 hover:border-[#2a3a52] transition-all">
+            <div class="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-red-400 to-orange-400"></div>
+            <div class="text-[11px] font-bold tracking-widest uppercase text-[#64748b]">Expirados</div>
+            <div id="statExpired" class="text-[32px] font-black tracking-tight mt-2 text-red-400">0</div>
+            <div class="text-[12px] text-[#475569] mt-1">Precisam renovar</div>
+            <div class="absolute right-6 top-6 w-10 h-10 rounded-xl bg-red-500/10 border border-red-500/20 flex items-center justify-center">⚠️</div>
+          </div>
+          <div class="group relative overflow-hidden rounded-[20px] bg-[#0f1623] border border-[#1e2a3a] p-6 hover:border-[#2a3a52] transition-all">
+            <div class="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-amber-400 to-orange-400"></div>
+            <div class="text-[11px] font-bold tracking-widest uppercase text-[#64748b]">Hoje</div>
+            <div id="statToday" class="text-[32px] font-black tracking-tight mt-2 text-amber-400">0</div>
+            <div class="text-[12px] text-[#475569] mt-1">Expiram hoje</div>
+            <div class="absolute right-6 top-6 w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center">⏰</div>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div class="lg:col-span-2 rounded-[20px] bg-[#0f1623] border border-[#1e2a3a] p-6">
+            <div class="flex items-center justify-between mb-6"><h3 class="font-bold text-[14px]">Receita últimos 30 dias</h3><div class="text-[11px] text-[#64748b]">MT • Moçambique</div></div>
+            <div class="h-[260px]"><canvas id="revenueChart"></canvas></div>
+          </div>
+          <div class="rounded-[20px] bg-[#0f1623] border border-[#1e2a3a] p-6">
+            <h3 class="font-bold text-[14px] mb-6">Planos mais vendidos</h3>
+            <div class="h-[200px]"><canvas id="planChart"></canvas></div>
+            <div id="revenueByPlan" class="mt-6 space-y-2"></div>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div class="rounded-[20px] bg-[#0f1623] border border-[#1e2a3a] p-6">
+            <h3 class="font-bold text-[14px] mb-4">Acesso Admin Vitalício - Você</h3>
+            <div class="rounded-xl bg-gradient-to-br from-cyan-500/10 to-violet-600/10 border border-cyan-500/20 p-5">
+              <div class="text-[13px] text-[#94a3b8] mb-4">Como criador do projeto, você tem acesso gratuito vitalício. Use na extensão Chrome:</div>
+              <div class="grid grid-cols-2 gap-3">
+                <div class="rounded-xl bg-[#060a0f] border border-[#1e2a3a] p-3"><div class="text-[10px] uppercase tracking-widest font-bold text-[#64748b]">Master</div><div class="font-mono font-black text-[16px] text-cyan-400 mt-1">SOUTO-MASTER</div><div class="text-[11px] text-[#475569] mt-1">Vitalício • Ilimitado</div></div>
+                <div class="rounded-xl bg-[#060a0f] border border-[#1e2a3a] p-3"><div class="text-[10px] uppercase tracking-widest font-bold text-[#64748b]">Numérico</div><div class="font-mono font-black text-[16px] text-emerald-400 mt-1">99999999</div><div class="text-[11px] text-[#475569] mt-1">Vitalício • 10 devices</div></div>
+              </div>
+              <button onclick="generateAdminLicense()" class="mt-4 w-full h-10 rounded-xl bg-[#1c2433] hover:bg-[#232e42] border border-[#1e2a3a] text-[12px] font-bold">Gerar minha licença admin agora →</button>
+            </div>
+          </div>
+          <div class="rounded-[20px] bg-[#0f1623] border border-[#1e2a3a] p-6">
+            <h3 class="font-bold text-[14px] mb-4">Próximas expirações</h3>
+            <div id="upcomingExpirations" class="space-y-2 max-h-[260px] overflow-y-auto"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- GENERATOR PAGE -->
+      <div id="page-generator" class="page hidden">
+        <div class="max-w-[800px]">
+          <div class="rounded-[20px] bg-[#0f1623] border border-[#1e2a3a] p-6 md:p-8">
+            <h3 class="text-[18px] font-black tracking-tight">Gerador de Licenças • Planos MT • 5000 caracteres</h3>
+            <p class="text-[13px] text-[#94a3b8] mt-2">Crie licenças de 8 dígitos para seus clientes. Campo observações suporta até 5000 caracteres, igual Lovable chat.</p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mt-8">
+              <div><label class="text-[11px] font-bold uppercase tracking-widest text-[#64748b] mb-2 block">Cliente *</label><input id="clientName" placeholder="Ex: João Silva - Empresa X" class="w-full h-[48px] px-4 rounded-xl bg-[#1c2433] border border-[#1e2a3a] focus:border-cyan-500/50 focus:ring-4 focus:ring-cyan-500/10 outline-none transition-all"></div>
+              <div><label class="text-[11px] font-bold uppercase tracking-widest text-[#64748b] mb-2 block">Telefone / WhatsApp *</label><input id="clientPhone" placeholder="84xxxxxxx" class="w-full h-[48px] px-4 rounded-xl bg-[#1c2433] border border-[#1e2a3a] focus:border-cyan-500/50 focus:ring-4 focus:ring-cyan-500/10 outline-none transition-all"></div>
+              <div><label class="text-[11px] font-bold uppercase tracking-widest text-[#64748b] mb-2 block">Email</label><input id="clientEmail" placeholder="cliente@email.com" class="w-full h-[48px] px-4 rounded-xl bg-[#1c2433] border border-[#1e2a3a] focus:border-cyan-500/50 outline-none"></div>
+              <div><label class="text-[11px] font-bold uppercase tracking-widest text-[#64748b] mb-2 block">Plano</label><select id="planSelect" onchange="updatePlanPrice()" class="w-full h-[48px] px-4 rounded-xl bg-[#1c2433] border border-[#1e2a3a] focus:border-cyan-500/50 outline-none"><option value="7">7 Dias - 500 MT</option><option value="15">15 Dias - 900 MT</option><option value="30" selected>30 Dias - 1500 MT</option><option value="60">60 Dias - 2000 MT</option><option value="custom">Personalizado (100 MT/dia)</option></select></div>
+              <div id="customDaysDiv" class="hidden"><label class="text-[11px] font-bold uppercase tracking-widest text-[#64748b] mb-2 block">Dias personalizados (ex: 113)</label><input id="customDays" type="number" placeholder="113" oninput="updatePlanPrice()" class="w-full h-[48px] px-4 rounded-xl bg-[#1c2433] border border-[#1e2a3a]"></div>
+              <div><label class="text-[11px] font-bold uppercase tracking-widest text-[#64748b] mb-2 block">Preço Calculado (MT)</label><input id="calculatedPrice" type="number" value="1500" class="w-full h-[48px] px-4 rounded-xl bg-[#1c2433] border border-[#1e2a3a] font-bold text-cyan-400"></div>
+              <div class="md:col-span-2"><label class="text-[11px] font-bold uppercase tracking-widest text-[#64748b] mb-2 block">Observações • até 5000 caracteres (igual Lovable chat)</label><textarea id="notes" maxlength="5000" rows="5" placeholder="Ex: Pagou via M-Pesa 842213421 - Clério Santos. Cliente VIP de Maputo. Projeto: E-commerce com M-Pesa. Pode escrever até 5000 caracteres visíveis, com markdown, detalhes, igual campo do Lovable..." class="w-full min-h-[140px] max-h-[400px] p-4 rounded-xl bg-[#1c2433] border border-[#1e2a3a] focus:border-cyan-500/50 focus:ring-4 focus:ring-cyan-500/10 outline-none resize-y leading-relaxed"></textarea><div class="flex justify-between mt-2"><span class="text-[11px] text-[#475569]">Suporta markdown, quebras de linha, até 5000 chars</span><span class="text-[11px] font-mono text-[#64748b]"><span id="notesCount">0</span>/5000</span></div></div>
+            </div>
+
+            <div class="flex gap-3 mt-8">
+              <button onclick="generateLicense()" class="flex-1 h-[52px] rounded-xl bg-gradient-to-r from-cyan-500 to-violet-600 text-white font-bold shadow-[0_0_30px_rgba(6,182,212,0.3)] hover:shadow-[0_0_40px_rgba(6,182,212,0.4)] hover:-translate-y-[1px] transition-all">Gerar Licença 8 Dígitos</button>
+              <button onclick="generateFatura()" class="h-[52px] px-6 rounded-xl bg-[#1c2433] border border-[#1e2a3a] font-semibold hover:bg-[#232e42]">Fatura</button>
+            </div>
+
+            <div id="generatedResult" class="hidden mt-8 p-6 rounded-[20px] bg-[#060a0f] border-2 border-cyan-500/30">
+              <div class="text-center">
+                <div class="text-[11px] font-bold tracking-widest uppercase text-[#64748b]">Código Gerado com Sucesso</div>
+                <div id="genCode" class="font-mono text-[40px] font-black tracking-[0.2em] text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-violet-400 mt-3">00000000</div>
+                <div class="grid grid-cols-2 gap-3 text-left mt-6 p-4 rounded-xl bg-[#0f1623] border border-[#1e2a3a]">
+                  <div><div class="text-[10px] uppercase tracking-widest text-[#475569] font-bold">Cliente</div><div id="genClient" class="font-semibold mt-1"></div></div>
+                  <div><div class="text-[10px] uppercase tracking-widest text-[#475569] font-bold">Telefone</div><div id="genPhone" class="font-mono mt-1"></div></div>
+                  <div><div class="text-[10px] uppercase tracking-widest text-[#475569] font-bold">Plano</div><div id="genPlan" class="mt-1"></div></div>
+                  <div><div class="text-[10px] uppercase tracking-widest text-[#475569] font-bold">Preço</div><div id="genPrice" class="font-bold text-cyan-400 mt-1"></div></div>
+                  <div><div class="text-[10px] uppercase tracking-widest text-[#475569] font-bold">Expira</div><div id="genExpiry" class="mt-1"></div></div>
+                  <div><div class="text-[10px] uppercase tracking-widest text-[#475569] font-bold">Dias</div><div id="genDays" class="mt-1"></div></div>
+                </div>
+                <div class="flex gap-3 justify-center mt-6">
+                  <button onclick="copyGenCode()" class="h-11 px-6 rounded-xl bg-gradient-to-r from-cyan-500 to-violet-600 text-white font-bold">Copiar Código</button>
+                  <button onclick="shareGenWhatsApp()" class="h-11 px-6 rounded-xl bg-[#25D366] text-white font-bold">WhatsApp</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- OTHER PAGES -->
+      <div id="page-licenses" class="page hidden"><div class="rounded-[20px] bg-[#0f1623] border border-[#1e2a3a] p-6"><div class="flex flex-wrap justify-between gap-4 mb-6"><h3 class="font-bold">Todas Licenças</h3><div class="flex gap-2"><input id="searchLicenses" placeholder="Buscar código, cliente..." oninput="renderLicenses()" class="h-10 px-4 rounded-xl bg-[#1c2433] border border-[#1e2a3a] text-[13px]"><select id="filterStatus" onchange="renderLicenses()" class="h-10 px-3 rounded-xl bg-[#1c2433] border border-[#1e2a3a] text-[12px]"><option value="">Todos</option><option value="active">Ativas</option><option value="expired">Expiradas</option><option value="blocked">Bloqueadas</option></select></div></div><div class="overflow-auto rounded-xl border border-[#1e2a3a]"><table class="w-full"><thead class="bg-[#1c2433]"><tr class="text-[11px] uppercase tracking-widest text-[#64748b]"><th class="p-4 text-left">Código</th><th class="p-4 text-left">Cliente</th><th class="p-4 text-left">Telefone</th><th class="p-4 text-left">Dias</th><th class="p-4 text-left">Criação</th><th class="p-4 text-left">Expiração</th><th class="p-4 text-left">Status</th><th class="p-4 text-left">Ações</th></tr></thead><tbody id="licensesTable" class="text-[13px]"></tbody></table></div></div></div>
+      <div id="page-clients" class="page hidden"><div class="rounded-[20px] bg-[#0f1623] border border-[#1e2a3a] p-6"><h3 class="font-bold mb-6">Clientes</h3><div class="overflow-auto rounded-xl border border-[#1e2a3a]"><table class="w-full"><thead class="bg-[#1c2433]"><tr class="text-[11px] uppercase tracking-widest text-[#64748b]"><th class="p-4 text-left">Cliente</th><th class="p-4 text-left">Telefone</th><th class="p-4 text-left">Licenças</th><th class="p-4 text-left">Total Pago</th><th class="p-4 text-left">Última</th></tr></thead><tbody id="clientsTable" class="text-[13px]"></tbody></table></div></div></div>
+      <div id="page-payments" class="page hidden"><div class="rounded-[20px] bg-[#0f1623] border border-[#1e2a3a] p-6"><h3 class="font-bold mb-6">Pagamentos M-Pesa / E-mola</h3><div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6"><div class="p-5 rounded-xl bg-[#1c2433] border border-[#1e2a3a]"><div class="font-bold">M-Pesa</div><div class="font-mono text-[20px] font-black text-cyan-400 mt-1">842213421</div><div class="text-[12px] text-[#64748b]">Clério Santos</div></div><div class="p-5 rounded-xl bg-[#1c2433] border border-[#1e2a3a]"><div class="font-bold">E-mola</div><div class="font-mono text-[20px] font-black text-cyan-400 mt-1">870123487</div></div></div><div class="overflow-auto rounded-xl border border-[#1e2a3a]"><table class="w-full"><thead class="bg-[#1c2433]"><tr class="text-[11px] uppercase tracking-widest text-[#64748b]"><th class="p-4 text-left">Data</th><th class="p-4 text-left">Cliente</th><th class="p-4 text-left">Método</th><th class="p-4 text-left">Valor</th><th class="p-4 text-left">Código</th></tr></thead><tbody id="paymentsTable" class="text-[13px]"></tbody></table></div></div></div>
+      <div id="page-renewals" class="page hidden"><div class="rounded-[20px] bg-[#0f1623] border border-[#1e2a3a] p-6"><h3 class="font-bold mb-6">Renovações</h3><div class="flex gap-3 mb-6"><input id="renewCode" placeholder="Código licença (ex: 48291375)" class="flex-1 h-12 px-4 rounded-xl bg-[#1c2433] border border-[#1e2a3a]"><button onclick="searchRenewCode()" class="h-12 px-6 rounded-xl bg-[#1c2433] border border-[#1e2a3a] font-bold">Buscar</button></div><div id="renewInfo" class="hidden p-5 rounded-xl bg-[#1c2433] border border-[#1e2a3a] mb-6"></div><div class="flex flex-wrap gap-2"><button onclick="addDays(10)" class="h-10 px-4 rounded-xl bg-[#1c2433] border border-[#1e2a3a] text-[13px]">+10 dias (1000 MT)</button><button onclick="addDays(20)" class="h-10 px-4 rounded-xl bg-[#1c2433] border border-[#1e2a3a] text-[13px]">+20 dias (2000 MT)</button><button onclick="addDays(40)" class="h-10 px-4 rounded-xl bg-[#1c2433] border border-[#1e2a3a] text-[13px]">+40 dias (4000 MT)</button><input id="customRenewDays" type="number" placeholder="Dias" class="w-24 h-10 px-3 rounded-xl bg-[#1c2433] border border-[#1e2a3a]"><button onclick="addCustomDays()" class="h-10 px-4 rounded-xl bg-gradient-to-r from-cyan-500 to-violet-600 text-white font-bold">Adicionar</button></div></div></div>
+      <div id="page-reports" class="page hidden"><div class="rounded-[20px] bg-[#0f1623] border border-[#1e2a3a] p-6"><h3 class="font-bold mb-6">Relatórios</h3><div id="reportsContent"></div><div class="mt-6 h-[300px]"><canvas id="reportChart"></canvas></div></div></div>
+      <div id="page-logs" class="page hidden"><div class="rounded-[20px] bg-[#0f1623] border border-[#1e2a3a] p-6"><h3 class="font-bold mb-6">Logs</h3><div id="logsContent" class="space-y-2 max-h-[600px] overflow-y-auto"></div></div></div>
+      <div id="page-settings" class="page hidden"><div class="rounded-[20px] bg-[#0f1623] border border-[#1e2a3a] p-6"><h3 class="font-bold mb-6">Configurações • soutolovable.vercel.app</h3><div class="space-y-6 max-w-[600px]"><div><label class="text-[11px] font-bold uppercase tracking-widest text-[#64748b] mb-2 block">URL API (seu domínio Vercel)</label><input value="https://soutolovable.vercel.app" readonly class="w-full h-12 px-4 rounded-xl bg-[#1c2433] border border-[#1e2a3a] font-mono text-cyan-400"><div class="text-[11px] text-[#475569] mt-2">Extensão aponta para cá • https://soutolovable.vercel.app/api/licenca</div></div><div><label class="text-[11px] font-bold uppercase tracking-widest text-[#64748b] mb-2 block">Códigos Admin Master (vitalício)</label><input value="SOUTO-MASTER | 99999999 | ADMIN-SOUTO | CLERIO-MASTER" readonly class="w-full h-12 px-4 rounded-xl bg-[#1c2433] border border-[#1e2a3a] font-mono"><div class="text-[11px] text-[#475569] mt-2">Use na extensão para acesso vitalício gratuito</div></div><div class="flex gap-3"><button onclick="exportJSON()" class="h-11 px-5 rounded-xl bg-[#1c2433] border border-[#1e2a3a] font-semibold">Backup JSON</button><button onclick="clearAllData()" class="h-11 px-5 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 font-semibold">Limpar Tudo</button></div></div></div></div>
+    </main>
+  </div>
+</div>
+
+<script>
+let licenses = JSON.parse(localStorage.getItem('lovable_licenses_master')||'[]');
+let clients = JSON.parse(localStorage.getItem('lovable_clients_master')||'[]');
+let payments = JSON.parse(localStorage.getItem('lovable_payments_master')||'[]');
+let logs = JSON.parse(localStorage.getItem('lovable_logs_master')||'[]');
+let currentRenewLicense = null;
+let revenueChartInstance = null, planChartInstance = null;
+const PLANS = {7:500,15:900,30:1500,60:2000};
+
+function genCode8(){return Math.floor(10000000+Math.random()*90000000).toString();}
+function login(){const u=document.getElementById('loginUser').value;const p=document.getElementById('loginPass').value;if(u==='admin'&&p==='admin123'){localStorage.setItem('lovable_admin_logged','true');document.getElementById('loginPage').classList.add('hidden');document.getElementById('dashboardPage').classList.remove('hidden');logAction('Login admin MASTER - soutolovable.vercel.app');fetchAPIData();renderAll();initCharts();}else alert('Use admin / admin123');}
+function logout(){localStorage.removeItem('lovable_admin_logged');location.reload();}
+function checkAuth(){if(localStorage.getItem('lovable_admin_logged')==='true'){document.getElementById('loginPage').classList.add('hidden');document.getElementById('dashboardPage').classList.remove('hidden');fetchAPIData();renderAll();setTimeout(initCharts,500);}}
+function showPage(page){document.querySelectorAll('.page').forEach(p=>p.classList.add('hidden'));document.getElementById('page-'+page).classList.remove('hidden');document.querySelectorAll('.nav-item').forEach(n=>{n.classList.remove('bg-[#1c2433]','text-white','border','border-[#1e2a3a]');n.classList.add('text-[#94a3b8]')});document.querySelector(`[data-page="${page}"]`)?.classList.add('bg-[#1c2433]','text-white','border','border-[#1e2a3a]');document.getElementById('pageTitle').textContent=document.querySelector(`[data-page="${page}"]`)?.textContent?.trim()||page;if(page==='licenses')renderLicenses();if(page==='clients')renderClients();if(page==='payments')renderPayments();if(page==='reports')renderReports();if(page==='logs')renderLogs();document.getElementById('sidebar').classList.add('-translate-x-full','lg:translate-x-0');document.getElementById('sidebar').classList.remove('translate-x-0');}
+document.querySelectorAll('.nav-item').forEach(item=>{item.addEventListener('click',()=>showPage(item.dataset.page));});
+document.getElementById('notes')?.addEventListener('input',(e)=>{document.getElementById('notesCount').textContent=e.target.value.length;});
+
+async function fetchAPIData(){
+  try{
+    const res = await fetch('/api/licenses');
+    const data = await res.json();
+    if(data.licenses && data.licenses.length>0){
+      // Mescla com localStorage, prioriza API
+      const apiCodes = new Set(data.licenses.map(l=>l.codigo));
+      const localOnly = licenses.filter(l=>!apiCodes.has(l.codigo));
+      licenses = [...data.licenses, ...localOnly];
+      saveAll();
+      renderAll();
+      updateCharts();
+    }
+  }catch(e){console.log('API offline, usando local', e)}
+}
+
+function updatePlanPrice(){const plan=document.getElementById('planSelect').value;const customDiv=document.getElementById('customDaysDiv');const priceInput=document.getElementById('calculatedPrice');if(plan==='custom'){customDiv.classList.remove('hidden');const days=parseInt(document.getElementById('customDays').value)||1;priceInput.value=days*100;}else{customDiv.classList.add('hidden');priceInput.value=PLANS[plan]||0;}}
+
+async function generateLicense(){
+  const client=document.getElementById('clientName').value.trim();
+  const phone=document.getElementById('clientPhone').value.trim();
+  const email=document.getElementById('clientEmail').value.trim();
+  const plan=document.getElementById('planSelect').value;
+  const customDays=parseInt(document.getElementById('customDays').value)||0;
+  const price=parseInt(document.getElementById('calculatedPrice').value)||0;
+  const notes=document.getElementById('notes').value.trim();
+  if(!client) return alert('Informe cliente');
+  if(!phone) return alert('Informe telefone');
+  let days=plan==='custom'?customDays:parseInt(plan)||30;
+  if(!days) return alert('Dias inválidos');
+  const code=genCode8();
+  const now=Date.now();
+  const expiry=now+days*86400000;
+  const license={codigo:code,code,cliente:client,client,telefone:phone,phone,email,dias:days,days,preco:price,price,data:now,createdAt:now,expiracao:expiry,expiry,expiracaoDate:new Date(expiry).toLocaleDateString('pt-BR'),observacoes:notes,notes,status:'active',plano:plan};
+  licenses.unshift(license);
+  let cli=clients.find(c=>c.telefone===phone);
+  if(!cli){cli={telefone:phone,phone,cliente:client,client,email,licencas:0,totalPago:0,ultimaCompra:now};clients.push(cli);}
+  cli.licencas++;cli.totalPago+=price;cli.ultimaCompra=now;
+  payments.unshift({data:now,cliente:client,telefone:phone,metodo:'M-Pesa/E-mola',valor:price,codigo:code});
+  saveAll();logAction('Gerou '+code+' para '+client+' - '+days+' dias - '+price+' MT');
+  document.getElementById('genCode').textContent=code;
+  document.getElementById('genClient').textContent=client;
+  document.getElementById('genPhone').textContent=phone;
+  document.getElementById('genPlan').textContent=days+' dias';
+  document.getElementById('genPrice').textContent=price;
+  document.getElementById('genExpiry').textContent=new Date(expiry).toLocaleDateString('pt-BR');
+  document.getElementById('genDays').textContent=days;
+  document.getElementById('generatedResult').classList.remove('hidden');
+  renderAll();updateCharts();
+  try{await fetch('/api/generate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({client,phone,email,plan:days+'D',customKey:code,price})});}catch(e){}
+}
+function generateAdminLicense(){const code='99999999';const now=Date.now();const expiry=now+3650*86400000;const license={codigo:code,code,cliente:'ADMIN - Clerio Santos',telefone:'842213421',dias:3650,preco:0,data:now,expiracao:expiry,expiracaoDate:new Date(expiry).toLocaleDateString('pt-BR'),status:'active'};if(!licenses.find(l=>l.codigo===code)){licenses.unshift(license);saveAll();renderAll();}document.getElementById('genCode').textContent=code;document.getElementById('genClient').textContent='ADMIN - Clerio Santos';document.getElementById('genPhone').textContent='842213421';document.getElementById('genPlan').textContent='Vitalicio - Admin';document.getElementById('genPrice').textContent='0 (Admin)';document.getElementById('genExpiry').textContent=new Date(expiry).toLocaleDateString('pt-BR');document.getElementById('genDays').textContent='3650';document.getElementById('generatedResult').classList.remove('hidden');alert('Licenca ADMIN 99999999 gerada! Use na extensao.');}
+function copyGenCode(){navigator.clipboard.writeText(document.getElementById('genCode').textContent).then(()=>alert('Copiado!'));}
+function shareGenWhatsApp(){const code=document.getElementById('genCode').textContent;const client=document.getElementById('genClient').textContent;const plan=document.getElementById('genPlan').textContent;const price=document.getElementById('genPrice').textContent;const expiry=document.getElementById('genExpiry').textContent;const msg=`Bem-vindo a familia LovABLE!%0ACodigo: ${code}%0ACliente: ${client}%0APlano: ${plan}%0APreco: ${price} MT%0AExpira: ${expiry}%0Ahttps://soutolovable.vercel.app`;window.open('https://wa.me/?text='+encodeURIComponent(msg),'_blank');}
+function generateFatura(){const client=document.getElementById('clientName').value||'Cliente';const price=document.getElementById('calculatedPrice').value||'0';const fatura=`FATURA - Souto Digital Servicos\nCliente: ${client}\nValor: ${price} MT\nM-Pesa: 842213421 - Clerio Santos\nE-mola: 870123487\nData: ${new Date().toLocaleDateString('pt-BR')}\nhttps://soutolovable.vercel.app`;const blob=new Blob([fatura],{type:'text/plain'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=`fatura_${Date.now()}.txt`;a.click();}
+function renderLicenses(){const tbody=document.getElementById('licensesTable');const search=(document.getElementById('searchLicenses')?.value||'').toLowerCase();const filter=document.getElementById('filterStatus')?.value||'';let filtered=[...licenses];if(search)filtered=filtered.filter(l=>(l.codigo||'').includes(search)||(l.cliente||'').toLowerCase().includes(search));if(filter){if(filter==='expired')filtered=filtered.filter(l=>Date.now()>l.expiracao);else if(filter==='active')filtered=filtered.filter(l=>l.status==='active'&&Date.now()<l.expiracao);else filtered=filtered.filter(l=>l.status===filter);}tbody.innerHTML=filtered.map(l=>{const isExpired=Date.now()>l.expiracao;const status=isExpired?'expired':l.status;return `<tr class="border-b border-[#1e2a3a] hover:bg-[#1c2433]/50"><td class="p-4"><span class="font-mono font-bold bg-[#1c2433] px-2.5 py-1 rounded-lg border border-[#1e2a3a]">${l.codigo}</span></td><td class="p-4"><div class="font-semibold">${l.cliente||l.client}</div><div class="text-[11px] text-[#64748b] truncate max-w-[200px]">${(l.observacoes||'').slice(0,60)}</div></td><td class="p-4 font-mono text-[12px]">${l.telefone||l.phone||''}</td><td class="p-4">${l.dias||l.days}</td><td class="p-4 text-[12px]">${new Date(l.data||l.createdAt).toLocaleDateString('pt-BR')}</td><td class="p-4"><div>${l.expiracaoDate||new Date(l.expiracao||0).toLocaleDateString('pt-BR')}</div><div class="text-[10px] ${isExpired?'text-red-400':'text-[#64748b]'}">${isExpired?'Expirada':Math.ceil((l.expiracao-Date.now())/86400000)+'d'}</div></td><td class="p-4"><span class="px-2.5 py-1 rounded-full text-[10px] font-bold uppercase ${status==='active'?'bg-emerald-500/15 text-emerald-400 border border-emerald-500/20':status==='expired'?'bg-red-500/15 text-red-400 border border-red-500/20':'bg-gray-500/15 text-gray-400 border border-[#1e2a3a]'}">${status==='active'?'Activa':status==='expired'?'Expirada':'Bloqueada'}</span></td><td class="p-4"><div class="flex gap-1"><button onclick="copyCode('${l.codigo}')" class="w-7 h-7 rounded-lg bg-[#1c2433] border border-[#1e2a3a] hover:bg-[#232e42] text-[12px]">C</button><button onclick="deleteLicense('${l.codigo}')" class="w-7 h-7 rounded-lg bg-red-500/10 border border-red-500/20 text-red-400 hover:bg-red-500/15 text-[12px]">X</button></div></td></tr>`;}).join('');document.getElementById('navLicensesCount').textContent=licenses.length;}
+function renderClients(){document.getElementById('clientsTable').innerHTML=clients.map(c=>`<tr class="border-b border-[#1e2a3a] hover:bg-[#1c2433]/50"><td class="p-4 font-semibold">${c.cliente||c.client}</td><td class="p-4 font-mono text-[12px]">${c.telefone||c.phone}</td><td class="p-4">${c.licencas||0}</td><td class="p-4 font-bold text-cyan-400">${c.totalPago||0} MT</td><td class="p-4 text-[12px]">${c.ultimaCompra?new Date(c.ultimaCompra).toLocaleDateString('pt-BR'):''}</td></tr>`).join('');}
+function renderPayments(){document.getElementById('paymentsTable').innerHTML=payments.map(p=>`<tr class="border-b border-[#1e2a3a] hover:bg-[#1c2433]/50"><td class="p-4 text-[12px]">${new Date(p.data).toLocaleDateString('pt-BR')}</td><td class="p-4 font-medium">${p.cliente}</td><td class="p-4 text-[12px]">${p.telefone||''}</td><td class="p-4 text-[12px]">${p.metodo||'M-Pesa'}</td><td class="p-4 font-bold text-cyan-400">${p.valor||p.preco||0} MT</td><td class="p-4 font-mono text-[12px]">${p.codigo||''}</td></tr>`).join('');}
+function renderDashboard(){const total=licenses.length;const active=licenses.filter(l=>l.status!=='blocked'&&Date.now()<l.expiracao).length;const expired=licenses.filter(l=>Date.now()>l.expiracao).length;const revenue=licenses.reduce((s,l)=>s+(l.preco||l.price||0),0);document.getElementById('statRevenue').textContent=revenue+' MT';document.getElementById('statTotal').textContent=total+' licencas';document.getElementById('statActive').textContent=active;document.getElementById('statExpired').textContent=expired;document.getElementById('statToday').textContent=licenses.filter(l=>new Date(l.expiracao).toDateString()===new Date().toDateString()).length;const byPlan={};licenses.forEach(l=>{const k=(l.dias||l.days)+' dias';if(!byPlan[k])byPlan[k]={count:0,revenue:0};byPlan[k].count++;byPlan[k].revenue+=(l.preco||0);});document.getElementById('revenueByPlan').innerHTML=Object.entries(byPlan).map(([k,v])=>`<div class="flex justify-between items-center p-3 rounded-xl bg-[#1c2433] border border-[#1e2a3a]"><span class="text-[13px] font-medium">${k} • ${v.count}x</span><span class="font-bold text-cyan-400">${v.revenue} MT</span></div>`).join('')||'<div class="text-[#475569] text-center py-8 text-[13px]">Sem dados</div>';const upcoming=licenses.filter(l=>Date.now()<l.expiracao).sort((a,b)=>a.expiracao-b.expiracao).slice(0,5);document.getElementById('upcomingExpirations').innerHTML=upcoming.map(l=>`<div class="flex justify-between items-center p-3 rounded-xl bg-[#1c2433] border border-[#1e2a3a]"><div><div class="font-medium text-[13px]">${l.cliente}</div><div class="font-mono text-[11px] text-[#64748b]">${l.codigo}</div></div><div class="text-[11px] bg-[#0f1623] border border-[#1e2a3a] px-2 py-1 rounded-lg">${new Date(l.expiracao).toLocaleDateString('pt-BR')}</div></div>`).join('')||'<div class="text-[#475569] text-center py-8 text-[13px]">Nenhuma</div>';}
+function renderReports(){document.getElementById('reportsContent').innerHTML=`<div class="grid grid-cols-1 md:grid-cols-3 gap-4"><div class="p-5 rounded-xl bg-[#1c2433] border border-[#1e2a3a]"><div class="text-[11px] uppercase tracking-widest font-bold text-[#64748b]">Total Vendido</div><div class="text-[24px] font-black mt-2">${licenses.reduce((s,l)=>s+(l.preco||0),0)} MT</div></div><div class="p-5 rounded-xl bg-[#1c2433] border border-[#1e2a3a]"><div class="text-[11px] uppercase tracking-widest font-bold text-[#64748b]">Ticket Medio</div><div class="text-[24px] font-black mt-2">${licenses.length?Math.round(licenses.reduce((s,l)=>s+(l.preco||0),0)/licenses.length):0} MT</div></div><div class="p-5 rounded-xl bg-[#1c2433] border border-[#1e2a3a]"><div class="text-[11px] uppercase tracking-widest font-bold text-[#64748b]">Clientes</div><div class="text-[24px] font-black mt-2">${clients.length}</div></div></div>`;}
+function renderLogs(){document.getElementById('logsContent').innerHTML=logs.slice().reverse().slice(0,100).map(l=>`<div class="flex gap-3 p-3 rounded-xl bg-[#1c2433] border border-[#1e2a3a] text-[13px]"><span class="font-mono text-[11px] text-[#475569] whitespace-nowrap">${new Date(l.time).toLocaleString('pt-BR')}</span><span class="text-[#94a3b8]">${l.action}</span></div>`).join('')||'<div class="text-[#475569] text-center py-8">Sem logs</div>';}
+function copyCode(code){navigator.clipboard.writeText(code).then(()=>alert('Copiado '+code));}
+function deleteLicense(code){if(!confirm('Deletar '+code+'?'))return;licenses=licenses.filter(l=>l.codigo!==code);saveAll();renderLicenses();renderDashboard();logAction('Deletou '+code);updateCharts();}
+function searchRenewCode(){const code=document.getElementById('renewCode').value.trim();const lic=licenses.find(l=>l.codigo===code);if(!lic)return alert('Nao encontrado');currentRenewLicense=lic;document.getElementById('renewInfo').classList.remove('hidden');document.getElementById('renewInfo').innerHTML=`<div class="space-y-2"><div><span class="text-[#64748b]">Cliente:</span> <span class="font-semibold">${lic.cliente}</span></div><div><span class="text-[#64748b]">Codigo:</span> <span class="font-mono font-bold">${lic.codigo}</span></div><div><span class="text-[#64748b]">Expira:</span> ${lic.expiracaoDate} (${Math.ceil((lic.expiracao-Date.now())/86400000)} dias)</div></div>`;}
+function addDays(days){if(!currentRenewLicense)return alert('Busque codigo');const price=days*100;if(!confirm('Adicionar '+days+' dias por '+price+' MT para '+currentRenewLicense.cliente+'?'))return;currentRenewLicense.expiracao+=days*86400000;currentRenewLicense.expiracaoDate=new Date(currentRenewLicense.expiracao).toLocaleDateString('pt-BR');currentRenewLicense.dias+=days;saveAll();renderAll();logAction('Renovou '+currentRenewLicense.codigo+' +'+days+' dias');alert('Renovado! Nova expiracao: '+currentRenewLicense.expiracaoDate);fetch('/api/renew',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({codigo:currentRenewLicense.codigo,dias:days})});}
+function addCustomDays(){const d=parseInt(document.getElementById('customRenewDays').value);if(!d)return alert('Informe dias');addDays(d);}
+function saveAll(){localStorage.setItem('lovable_licenses_master',JSON.stringify(licenses));localStorage.setItem('lovable_clients_master',JSON.stringify(clients));localStorage.setItem('lovable_payments_master',JSON.stringify(payments));localStorage.setItem('lovable_logs_master',JSON.stringify(logs));}
+function logAction(a){logs.unshift({time:Date.now(),action:a});if(logs.length>300)logs=logs.slice(0,300);saveAll();}
+function renderAll(){renderLicenses();renderClients();renderPayments();renderDashboard();}
+function exportCSV(){let csv='Codigo,Cliente,Telefone,Dias,Preco,Data,Expiracao,Status\n';licenses.forEach(l=>{csv+=`"${l.codigo}","${l.cliente}","${l.telefone}",${l.dias},${l.preco},"${new Date(l.data).toLocaleDateString('pt-BR')}","${l.expiracaoDate}","${l.status}"\n`;});const blob=new Blob([csv],{type:'text/csv'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='licencas_soutolovable_'+Date.now()+'.csv';a.click();}
+function exportJSON(){const blob=new Blob([JSON.stringify({licenses,clients,payments,logs,exportado:new Date().toISOString(),dominio:'https://soutolovable.vercel.app'},null,2)],{type:'application/json'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=`backup_master_${Date.now()}.json`;a.click();}
+function clearAllData(){if(!confirm('APAGAR TUDO? Isso vai limpar todas licencas locais.'))return;if(!confirm('Tem certeza? Digite SIM para confirmar'))return;localStorage.clear();licenses=[];clients=[];payments=[];logs=[];renderAll();alert('Tudo limpo!');}
+
+function initCharts(){
+  const ctx1 = document.getElementById('revenueChart');
+  const ctx2 = document.getElementById('planChart');
+  if(!ctx1||!ctx2) return;
+  
+  // Revenue last 14 days
+  const last14 = Array.from({length:14},(_,i)=>{
+    const d=new Date(); d.setDate(d.getDate()-(13-i));
+    const ds=d.toISOString().split('T')[0];
+    const dayLic = licenses.filter(l=> new Date(l.data||0).toISOString().split('T')[0]===ds);
+    return {date:ds.slice(5), revenue:dayLic.reduce((s,l)=>s+(l.preco||0),0), count:dayLic.length};
+  });
+
+  if(revenueChartInstance) revenueChartInstance.destroy();
+  revenueChartInstance = new Chart(ctx1,{
+    type:'line',
+    data:{
+      labels:last14.map(d=>d.date),
+      datasets:[{
+        label:'Receita MT',
+        data:last14.map(d=>d.revenue),
+        borderColor:'#06b6d4',
+        backgroundColor:'rgba(6,182,212,0.1)',
+        fill:true,
+        tension:0.4,
+        borderWidth:2,
+        pointRadius:0,
+        pointHoverRadius:6
+      }]
+    },
+    options:{
+      responsive:true, maintainAspectRatio:false,
+      plugins:{legend:{display:false}},
+      scales:{
+        x:{grid:{display:false,color:'#1e2a3a'},ticks:{color:'#64748b',font:{size:10}}},
+        y:{grid:{color:'#1e2a3a'},ticks:{color:'#64748b',font:{size:10}}}
+      }
+    }
+  });
+
+  const byPlan = {};
+  licenses.forEach(l=>{const k=`${l.dias}d`;byPlan[k]=(byPlan[k]||0)+1;});
+  if(planChartInstance) planChartInstance.destroy();
+  planChartInstance = new Chart(ctx2,{
+    type:'doughnut',
+    data:{
+      labels:Object.keys(byPlan),
+      datasets:[{data:Object.values(byPlan),backgroundColor:['#06b6d4','#8b5cf6','#10b981','#f59e0b','#ef4444'],borderWidth:0}]
+    },
+    options:{
+      responsive:true, maintainAspectRatio:false,
+      plugins:{legend:{position:'bottom',labels:{color:'#94a3b8',font:{size:11},padding:12}}},
+      cutout:'65%'
+    }
+  });
+}
+
+function updateCharts(){initCharts();}
+
+checkAuth();
+</script>
+</body>
+</html>

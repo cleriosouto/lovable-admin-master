@@ -1,0 +1,9 @@
+{
+  "name": "lovable-admin-master",
+  "version": "3.1.0",
+  "private": true,
+  "dependencies": {
+    "@vercel/kv": "^1.0.1"
+  },
+  "description": "LovABLE MASTER Admin - Souto Digital Servicos - https://soutolovable.vercel.app"
+}
