@@ -4,6 +4,7 @@ import { Redis } from "@upstash/redis";
 let redis = null;
 
 
+
 try {
 
 
@@ -37,7 +38,7 @@ try {
 
 
         console.log(
-            "[WARNING] Redis ENV ausente"
+            "[WARNING] Variáveis Redis ausentes"
         );
 
 
@@ -49,7 +50,7 @@ try {
 
 
     console.log(
-        "Redis erro:",
+        "Redis config error:",
         e.message
     );
 
@@ -59,24 +60,78 @@ try {
 
 
 
-
 export const kv = {
+
 
 
     async get(key){
 
 
-        if(redis){
+        if(!redis){
 
-            return await redis.get(key);
+            return null;
 
         }
 
 
-        return null;
+
+        try{
+
+
+            const value =
+                await redis.get(key);
+
+
+
+            if(value === null){
+
+                return null;
+
+            }
+
+
+
+            if(typeof value === "string"){
+
+
+                try{
+
+                    return JSON.parse(value);
+
+                }catch{
+
+
+                    return value;
+
+                }
+
+
+            }
+
+
+
+            return value;
+
+
+
+        }catch(e){
+
+
+            console.log(
+                "Redis GET error:",
+                e.message
+            );
+
+
+            return null;
+
+
+        }
 
 
     },
+
+
 
 
 
@@ -84,20 +139,48 @@ export const kv = {
     async set(key,value){
 
 
-        if(redis){
+        if(!redis){
 
-            return await redis.set(
-                key,
-                value
-            );
+            return null;
 
         }
 
 
-        return null;
+
+        try{
+
+
+            return await redis.set(
+
+                key,
+
+                value
+
+            );
+
+
+
+        }catch(e){
+
+
+            console.log(
+
+                "Redis SET error:",
+
+                e.message
+
+            );
+
+
+            return null;
+
+
+        }
 
 
     },
+
+
 
 
 
@@ -105,14 +188,37 @@ export const kv = {
     async del(key){
 
 
-        if(redis){
+        if(!redis){
 
-            return await redis.del(key);
+            return null;
 
         }
 
 
-        return null;
+
+        try{
+
+
+            return await redis.del(key);
+
+
+
+        }catch(e){
+
+
+            console.log(
+
+                "Redis DEL error:",
+
+                e.message
+
+            );
+
+
+            return null;
+
+
+        }
 
 
     },
@@ -120,23 +226,85 @@ export const kv = {
 
 
 
+
+
     async keys(pattern="*"){
 
 
-        if(redis){
+        if(!redis){
+
+            return [];
+
+        }
+
+
+
+        try{
+
 
             return await redis.keys(
                 pattern
             );
 
+
+
+        }catch(e){
+
+
+            console.log(
+
+                "Redis KEYS error:",
+
+                e.message
+
+            );
+
+
+            return [];
+
+
         }
 
 
-        return [];
+    },
+
+
+
+
+
+
+    async exists(key){
+
+
+        if(!redis){
+
+            return false;
+
+        }
+
+
+
+        try{
+
+
+            const result =
+                await redis.exists(key);
+
+
+
+            return result === 1;
+
+
+
+        }catch{
+
+
+            return false;
+
+
+        }
 
 
     }
-
-
 
 };
