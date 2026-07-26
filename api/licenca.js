@@ -1,20 +1,49 @@
+import { kv } from "../services/redis.js";
 
-let memoryStore = global.memoryStore || (global.memoryStore = new Map());
+
+let memoryStore =
+    global.memoryStore ||
+    (global.memoryStore = new Map());
+
+
 async function getStore(){
-  try{
-    const {kv}=await import('@vercel/kv');
-    return {
-      type:'kv',
-      get: async k => await kv.get(k),
-      set: async (k,v) => await kv.set(k,v)
-    };
-  }catch{
-    return {
-      type:'memory',
-      get: async k => memoryStore.get(k),
-      set: async (k,v) => memoryStore.set(k,v)
-    };
-  }
+
+    try{
+
+        return {
+
+            type:"kv",
+
+            get: async k =>
+                await kv.get(k),
+
+            set: async (k,v) =>
+                await kv.set(k,v)
+
+        };
+
+    }catch(e){
+
+        console.log(
+            "KV indisponível:",
+            e.message
+        );
+
+
+        return {
+
+            type:"memory",
+
+            get: async k =>
+                memoryStore.get(k),
+
+            set: async (k,v) =>
+                memoryStore.set(k,v)
+
+        };
+
+    }
+
 }
 
 const ADMIN_CODES = ['SOUTO-MASTER','99999999','ADMIN-SOUTO','CLERIO-MASTER','SOUTO-ADMIN'];
